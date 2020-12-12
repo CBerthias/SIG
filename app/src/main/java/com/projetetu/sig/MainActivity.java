@@ -69,12 +69,20 @@ public class MainActivity extends AppCompatActivity {
         assert image != null;
         BarcodeScanner scanner = BarcodeScanning.getClient(options);
 
-        Task<List<Barcode>> result = scanner.process(image)
+        scanner.process(image)
                 .addOnSuccessListener(barcodes -> {
-                    for (Barcode barcode: barcodes) {
-                        String rawValue = barcode.getRawValue();
-                        Log.d(TAG, rawValue);
-                        Toast.makeText(this, rawValue, Toast.LENGTH_LONG).show();
+                    if (barcodes.size()==0)
+                        Toast.makeText(this, "Aucun QR code trouvé", Toast.LENGTH_SHORT).show();
+                    else {
+                        Barcode premier = barcodes.get(0);
+                        String value = premier.getRawValue();
+                        String[] infos = value.split(",");
+                        Intent intent = new Intent(this, PlanActivity.class);
+                        intent.putExtra("etage", infos[0]);
+                        intent.putExtra("x", infos[1]);
+                        intent.putExtra("y", infos[2]);
+                        intent.putExtra("zoom", infos[3]);
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -83,7 +91,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goPlan(View view) {
+
         Intent intent = new Intent(this, PlanActivity.class);
+        intent.putExtra("etage", "etage_un");
+        intent.putExtra("x", "11.5");
+        intent.putExtra("y", "14.5");
+        intent.putExtra("zoom", "21");
         startActivity(intent);
     }
 }
