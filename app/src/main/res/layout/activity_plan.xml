@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context=".PlanActivity">
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchEtage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Etage 1"
+        android:onClick="switchLayer"
+        />
+
     <WebView
         android:id="@+id/simpleWebView"
         android:layout_width="match_parent"
