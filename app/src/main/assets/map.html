@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/css/ol.css">
+    <style>
+      .map {
+        height: 100vh;
+        width: 100%;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
+    <title>OpenLayers map</title>
+</head>
+<body>
+<div id="map" class="map"></div>
+<script type="text/javascript">
+      var etage_un = new ol.layer.Image({
+		source: new ol.source.ImageWMS({
+			url: 'http://192.168.1.38:8080/geoserver/batiment/wms',
+			params: {
+				'REQUEST'    : 'GetMap',
+				'SERVICE'    : 'WMS',
+				'VERSION'    : '1.1.0',
+				'STYLES'     : '',
+				'LAYERS'     : 'batiment:etage_un',
+				'CRS'        : 'EPSG:27562',
+				'BBOX'       : '0.0,0.0,23.0,29.0',
+				'WIDTH'      : '609',
+				'HEIGHT'     : '1186',
+				'FRAMEDELAY' : '768',
+			}
+		})
+	  });
+
+	  var etage_deux = new ol.layer.Image({
+		source: new ol.source.ImageWMS({
+			url: 'http://192.168.1.38:8080/geoserver/batiment/wms',
+			params: {
+				'REQUEST'    : 'GetMap',
+				'SERVICE'    : 'WMS',
+				'VERSION'    : '1.1.0',
+				'STYLES'     : '',
+				'LAYERS'     : 'batiment:etage_deux',
+				'CRS'        : 'EPSG:27562',
+				'BBOX'       : '0.0,0.0,23.0,29.0',
+				'WIDTH'      : '609',
+				'HEIGHT'     : '1186',
+				'FRAMEDELAY' : '768',
+			}
+		})
+	  });
+
+	  var map = new ol.Map({
+		target: 'map',
+		layers: [etage_un,etage_deux],
+		view: new ol.View({
+			center: [11.5,14.5],
+			zoom: 21
+		})
+	  });
+
+    </script>
+</body>
+</html>

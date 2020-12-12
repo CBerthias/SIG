@@ -81,4 +81,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "scanImage: Scan échoué");
                 });
     }
+
+    public void goPlan(View view) {
+        Intent intent = new Intent(this, PlanActivity.class);
+        startActivity(intent);
+    }
 }
