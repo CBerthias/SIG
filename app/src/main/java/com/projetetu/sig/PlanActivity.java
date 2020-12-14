@@ -76,7 +76,12 @@ public class PlanActivity extends AppCompatActivity {
             content = content.replace("%XH%", this.xh);
             content = content.replace("%YH%", this.yh);
         }
-        webView.loadData(content, "text/html", "utf-8");
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+        webView.getSettings().setAllowFileAccessFromFileURLs(true);
+        webView.addJavascriptInterface(new WebAppInterface(this), "Android");
+        webView.loadDataWithBaseURL("file:///android_asset/map.html",content, "text/html", "UTF-8", null);
         webView.getSettings().setJavaScriptEnabled(true);
     }
 

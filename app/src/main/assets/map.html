@@ -17,19 +17,15 @@
 
     var etage = new ol.layer.Tile({
         source: new ol.source.TileWMS({
-            url: 'http://192.168.1.38:8080/geoserver/batiment/wms',
+            url: 'http://192.168.1.62:8080/geoserver/Soupex_Mansion/wms',
             params: {
-                'REQUEST'    : 'GetMap',
-                'SERVICE'    : 'WMS',
-                'VERSION'    : '1.1.0',
-                'STYLES'     : '',
-                'LAYERS'     : 'batiment:%COUCHE%',
+                  'FORMAT' : 'image/png',
+                 'VERSION'    : '1.1.0',
+                'LAYERS'     : '%COUCHE%',
                 'CRS'        : 'EPSG:27562',
-                'BBOX'       : '0.0,0.0,23.0,29.0',
-                'WIDTH'      : '609',
-                'HEIGHT'     : '1186',
-                'FRAMEDELAY' : '768',
-            }
+                'TILE' : true
+            },
+            serverType: 'geoserver',
         })
     });
 
@@ -41,9 +37,30 @@
             zoom: %ZOOM%
         })
     });
+map.on('singleclick', function(evt) {
+         var etagenum = 0;
+         var id = 0;
+         var fonction = "";
+         var view = map.getView();
+         var viewResolution = view.getResolution();
+         var url = etage.getSource().getFeatureInfoUrl(evt.coordinate,viewResolution,view.getProjection(),{'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50});
+
+         if (url) {
+            fetch(url,{ mode: 'no-cors'})
+                .then(function (response) { return response.json(); })
+                .then(function (info) {
+                    var elem = info["features"][0]["id"].split('.');
+                    etagenum = elem[0];
+                    id = elem[1];
+                    fonction = info["features"][0]["properties"]["fonction"];
+                    Android.toRoom(id,fonction,etagenum);
+            });
+         }
+    });
+
 
     %SCRIPT%
 
-    </script>
+</script>
 </body>
 </html>
